@@ -11,7 +11,7 @@ void changeState(int pos){
 }
 
 int decToBinStates(int dec){
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < sizeof(states); i++) {
         states[i]=dec%2;
         dec=dec/2;
     }

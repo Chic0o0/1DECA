@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 bool states[8]; // State array
 
@@ -37,9 +38,13 @@ void getNextLine(bool *nextLine, bool *currentLine, int lenght){
 }
 
 int main(int argc, char const *argv[]){
+    //User input section
+    bool firstLineInit; //TODO: change to char
+    printf("Do you want your starting line to be just one pixel?(1=yes/0=no): ");
+    scanf("%d", &firstLineInit);
 
     int lenght, height;
-    printf("Enter lenght: ");
+    printf("Enter lenght (will break if its too large): ");
     scanf("%d", &lenght);
     printf("Enter height: ");
     scanf("%d", &height);
@@ -50,14 +55,22 @@ int main(int argc, char const *argv[]){
     if(rule<0 || rule>255) return -1;
     else decToBinStates(rule);
 
+    //Allocate memory
     bool *currentLine = malloc (lenght); // Current line holder
     bool *nextLine = malloc (lenght); // Next line holder
     
-    // Initialize first line - single 1 in the middle
-    for (int i = 0; i < lenght; i++) {
-        currentLine[i] = 0;
+    // Initialize first line
+    if(firstLineInit){
+        for (int i = 0; i < lenght; i++) {
+            currentLine[i] = 0;
+        }
+        currentLine[lenght / 2] = 1;
+    } else {
+        srand(time(NULL));
+        for (int i = 0; i < lenght; i++){
+            currentLine[i] = rand()%2==0?1:0;
+        }
     }
-    currentLine[lenght / 2] = 1;
 
     for (int j = 0; j < height; j++) {
         // Print current line
@@ -74,5 +87,8 @@ int main(int argc, char const *argv[]){
             currentLine[i] = nextLine[i];
         }
     }
+
+    free(currentLine);
+    free(nextLine);
     return 0;
 }

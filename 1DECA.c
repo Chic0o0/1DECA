@@ -24,15 +24,13 @@ int binToDec(bool bin[3]){
 
 void getNextLine(bool *nextLine, bool *currentLine, int lenght){
     bool triplet[3];
-    lenght=lenght*10; //Lazy and expensive but works
     
-    //TODO: border problem, implement best solution for output to look clean
     for (int i = 0; i < lenght; i++){
         triplet[1] = currentLine[i];
-        if(i==0) triplet[0]=triplet[1];
+        if(i==0) triplet[0]=currentLine[lenght-1];
         else triplet[0] = currentLine[i-1];
-        if(i==lenght-1) triplet[2]=triplet[1];
-        else triplet[2] = currentLine[i+1];      
+        if(i==lenght-1) triplet[2]=currentLine[0];
+        else triplet[2] = currentLine[i+1];    
         nextLine[i] = states[binToDec(triplet)];
     }
 }
